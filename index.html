@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaITekai.Pedia — Alight Motion Premium Automation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#09090b',
+                            800: '#121215',
+                            700: '#1c1c21',
+                            600: '#27272a',
+                            500: '#3f3f46'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Liquid Glass Styling -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #09090b;
+            color: #f4f4f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glow Background Effects */
+        .ambient-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Liquid Glass Base */
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.025);
+            backdrop-filter: blur(20px) saturate(190%);
+            -webkit-backdrop-filter: blur(20px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+
+        .liquid-glass-interactive {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .liquid-glass-interactive:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transition: all 0.25s ease;
+        }
+
+        .glass-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+
+        /* Pulsing Dot Animation */
+        @keyframes pulse-light {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+        }
+        .pulse-indicator {
+            animation: pulse-light 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative flex flex-col justify-between selection:bg-white selection:text-black">
+
+    <!-- Ambient Liquid Orbs -->
+    <div class="ambient-glow w-[500px] h-[500px] bg-white top-[-100px] left-[-100px]"></div>
+    <div class="ambient-glow w-[400px] h-[400px] bg-zinc-400 bottom-[-50px] right-[-50px]"></div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="relative z-10 flex flex-col min-h-screen">
+
+        <!-- HEADER / NAVBAR -->
+        <header class="w-full border-b border-white/5 backdrop-blur-md sticky top-0 z-50 bg-black/40">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+                
+                <!-- Logo & Branding -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl liquid-glass flex items-center justify-center font-bold text-white text-lg tracking-wider border border-white/20">
+                        ST
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg sm:text-xl tracking-tight text-white block leading-tight">
+                            SaITekai<span class="text-zinc-500">.Pedia</span>
+                        </span>
+                        <span class="text-[10px] tracking-widest text-zinc-400 uppercase font-mono">
+                            Automated Engine
+                        </span>
+                    </div>
+                </div>
+
+                <!-- API Status Badge -->
+                <div class="flex items-center space-x-4">
+                    <div class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-full liquid-glass border border-white/10 text-xs text-zinc-300 font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-indicator"></span>
+                        <span>API ONLINE</span>
+                    </div>
+                    <div class="text-xs px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-zinc-400 font-mono hidden md:block">
+                        v1.0.0
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col justify-center">
+
+            <!-- Hero Title -->
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 mb-4">
+                    <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    <span>Instant Premium Activation</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-white mb-3">
+                    Alight Motion Premium
+                </h1>
+                <p class="text-zinc-400 text-sm sm:text-base max-w-lg mx-auto">
+                    Aktivasi keanggotaan premium secara otomatis, cepat, dan tanpa perlu melakukan verifikasi berulang.
+                </p>
+            </div>
+
+            <!-- STEPPER WIZARD -->
+            <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
+                <!-- Step 1 Indicator -->
+                <div id="step-tab-1" class="liquid-glass rounded-xl p-3 sm:p-4 border-white/20 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-zinc-400">Tahap 01</span>
+                        <span id="badge-step-1" class="w-2 h-2 rounded-full bg-white"></span>
+                    </div>
+                    <p class="text-xs sm:text-sm font-semibold text-white truncate">Magic Link</p>
+                </div>
+
+                <!-- Step 2 Indicator -->
+                <div id="step-tab-2" class="liquid-glass rounded-xl p-3 sm:p-4 opacity-40 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-zinc-400">Tahap 02</span>
+                        <span id="badge-step-2" class="w-2 h-2 rounded-full bg-zinc-600"></span>
+                    </div>
+                    <p class="text-xs sm:text-sm font-semibold text-white truncate">Verifikasi</p>
+                </div>
+
+                <!-- Step 3 Indicator -->
+                <div id="step-tab-3" class="liquid-glass rounded-xl p-3 sm:p-4 opacity-40 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-zinc-400">Tahap 03</span>
+                        <span id="badge-step-3" class="w-2 h-2 rounded-full bg-zinc-600"></span>
+                    </div>
+                    <p class="text-xs sm:text-sm font-semibold text-white truncate">Status Premium</p>
+                </div>
+            </div>
+
+            <!-- MAIN INTERACTIVE GLASS CARD -->
+            <div class="liquid-glass rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+
+                <!-- Alert Notification Container -->
+                <div id="alert-box" class="hidden mb-6 p-4 rounded-xl border text-xs sm:text-sm font-mono flex items-start space-x-3 transition-all duration-300">
+                    <div id="alert-icon" class="mt-0.5 shrink-0"></div>
+                    <div id="alert-message" class="flex-1 break-words"></div>
+                </div>
+
+                <!-- ================= STEP 1: SEND MAGIC LINK ================= -->
+                <div id="step-content-1" class="space-y-6">
+                    <div>
+                        <h2 class="text-lg font-semibold text-white mb-1">Masukkan Alamat Gmail</h2>
+                        <p class="text-xs sm:text-sm text-zinc-400">Sistem akan mengirimkan magic link verifikasi resmi ke akun Alight Motion Anda.</p>
+                    </div>
+
+                    <form id="form-send-link" onsubmit="handleSendMagicLink(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono text-zinc-300 uppercase tracking-wider mb-2">Email Google / Alight Motion</label>
+                            <div class="relative">
+                                <input type="email" id="email-input" required placeholder="nama@gmail.com"
+                                    class="w-full glass-input px-4 py-3.5 rounded-xl text-sm font-mono placeholder-zinc-600 focus:outline-none">
+                                <div class="absolute right-3 top-3.5 text-zinc-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-send-link" class="w-full py-3.5 px-6 rounded-xl bg-white text-black font-semibold text-sm hover:bg-zinc-200 active:scale-[0.99] transition-all duration-200 flex items-center justify-center space-x-2">
+                            <span>Kirim Magic Link</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ================= STEP 2: VERIFY LINK ================= -->
+                <div id="step-content-2" class="space-y-6 hidden">
+                    <div>
+                        <div class="flex items-center space-x-2 text-xs font-mono text-emerald-400 mb-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Magic Link Terkirim</span>
+                        </div>
+                        <h2 class="text-lg font-semibold text-white mb-1">Tempelkan Link Verifikasi</h2>
+                        <p class="text-xs sm:text-sm text-zinc-400">Buka aplikasi Gmail Anda, salin/copy tombol atau URL verifikasi dari Alight Motion, lalu tempelkan di bawah ini.</p>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-zinc-300 font-mono leading-relaxed space-y-1">
+                        <p class="text-white font-semibold">Petunjuk:</p>
+                        <p>1. Buka Kotak Masuk / Folder Spam di Gmail.</p>
+                        <p>2. Cari email dari Alight Motion & Klik Kanan / Tahan lama tombol login lalu "Copy URL".</p>
+                    </div>
+
+                    <form id="form-verify-link" onsubmit="handleVerifyAccount(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono text-zinc-300 uppercase tracking-wider mb-2">URL / Link Verifikasi (rawLink)</label>
+                            <input type="url" id="rawlink-input" required placeholder="https://alight-creative.firebaseapp.com/__/auth/action?oobCode=..."
+                                class="w-full glass-input px-4 py-3.5 rounded-xl text-xs sm:text-sm font-mono placeholder-zinc-600 focus:outline-none">
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <button type="button" onclick="goToStep(1)" class="py-3.5 px-5 rounded-xl border border-white/10 text-zinc-400 text-sm font-semibold hover:bg-white/5 transition-all">
+                                Kembali
+                            </button>
+                            <button type="submit" id="btn-verify-account" class="flex-1 py-3.5 px-6 rounded-xl bg-white text-black font-semibold text-sm hover:bg-zinc-200 active:scale-[0.99] transition-all duration-200 flex items-center justify-center space-x-2">
+                                <span>Verifikasi Account</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ================= STEP 3: RESULT DASHBOARD ================= -->
+                <div id="step-content-3" class="space-y-6 hidden">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                        <div>
+                            <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400">Aktivasi Berhasil</span>
+                            <h2 class="text-xl font-bold text-white">Status Dashboard</h2>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-semibold">
+                            PREMIUM ACTIVE
+                        </span>
+                    </div>
+
+                    <!-- Details Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
+                        <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-1">
+                            <span class="text-zinc-500 block text-[10px] uppercase">Email Account</span>
+                            <span id="res-email" class="text-white font-semibold break-all">-</span>
+                        </div>
+                        <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-1">
+                            <span class="text-zinc-500 block text-[10px] uppercase">Order ID</span>
+                            <span id="res-order-id" class="text-zinc-300 break-all">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Quota Usage Progress -->
+                    <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-3">
+                        <div class="flex justify-between items-center text-xs font-mono">
+                            <span class="text-zinc-400">Quota Limit (24 Jam)</span>
+                            <span id="quota-text" class="text-white font-semibold">0 / 5</span>
+                        </div>
+                        <div class="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+                            <div id="quota-bar" class="h-full bg-white transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Token Management Section -->
+                    <div class="pt-2">
+                        <details class="group rounded-xl border border-white/5 bg-black/20 overflow-hidden">
+                            <summary class="p-4 cursor-pointer text-xs font-mono text-zinc-400 hover:text-white flex justify-between items-center select-none">
+                                <span>Token & Diagnostic Tools</span>
+                                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </summary>
+                            <div class="p-4 border-t border-white/5 space-y-3 text-xs font-mono">
+                                <div>
+                                    <label class="text-zinc-500 block mb-1">ID Token</label>
+                                    <input type="text" id="res-id-token" readonly class="w-full glass-input px-3 py-2 rounded-lg text-[10px] text-zinc-400 select-all">
+                                </div>
+                                <div>
+                                    <label class="text-zinc-500 block mb-1">Refresh Token</label>
+                                    <input type="text" id="res-refresh-token" readonly class="w-full glass-input px-3 py-2 rounded-lg text-[10px] text-zinc-400 select-all">
+                                </div>
+                                <button onclick="handleRefreshToken()" id="btn-refresh-token" class="w-full py-2.5 px-4 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-xs transition-all flex items-center justify-center space-x-2">
+                                    <span>Refresh Token Expired</span>
+                                </button>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Reset Action -->
+                    <button onclick="resetProcess()" class="w-full py-3 px-6 rounded-xl border border-white/10 text-zinc-300 font-semibold text-xs hover:bg-white/5 transition-all">
+                        Aktivasi Akun Lain
+                    </button>
+                </div>
+
+                <!-- LOADING OVERLAY -->
+                <div id="loading-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center z-30 hidden transition-all duration-300">
+                    <div class="w-10 h-10 border-2 border-white/20 border-t-white rounded-full animate-spin mb-4"></div>
+                    <span id="loading-text" class="text-xs font-mono text-zinc-300 tracking-wider">Memproses Data...</span>
+                </div>
+
+            </div>
+
+            <!-- Features Highlights -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                <div class="liquid-glass p-4 rounded-xl border-white/5">
+                    <span class="text-xs font-mono text-zinc-500 block mb-1">01 / DUKUNGAN</span>
+                    <h3 class="text-sm font-semibold text-white mb-1">Otomatisasi Penuh</h3>
+                    <p class="text-xs text-zinc-400">Aplikasi mengurus proses request token hingga aktivasi secara langsung.</p>
+                </div>
+                <div class="liquid-glass p-4 rounded-xl border-white/5">
+                    <span class="text-xs font-mono text-zinc-500 block mb-1">02 / KEAMANAN</span>
+                    <h3 class="text-sm font-semibold text-white mb-1">Akses Otentik</h3>
+                    <p class="text-xs text-zinc-400">Verifikasi dilakukan via tautan resmi Firebase Alight Motion.</p>
+                </div>
+                <div class="liquid-glass p-4 rounded-xl border-white/5">
+                    <span class="text-xs font-mono text-zinc-500 block mb-1">03 / PERFORMA</span>
+                    <h3 class="text-sm font-semibold text-white mb-1">Tanpa Login Ulang</h3>
+                    <p class="text-xs text-zinc-400">Cukup selesaikan proses sekali, status akun langsung aktif.</p>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="w-full border-t border-white/5 py-6 text-center text-xs text-zinc-500 font-mono">
+            <div class="max-w-6xl mx-auto px-4">
+                &copy; 2026 SaITekai.Pedia — All rights reserved. Powered by Minimalist Glass Engine.
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Ganti string di bawah ini dengan API Key baru kamu dari panel AxzyeDev
+        const API_KEY = "AzaGanteng-ddEXYMbJfDIPvBosnlCtHBVxtZXQuUA6";
+        const BASE_URL = "https://axzyedev.biz.id/api/v1";
+
+        // State Store
+        const state = {
+            email: "",
+            idToken: "",
+            refreshToken: "",
+            currentStep: 1
+        };
+
+        // UI Helpers
+        function showAlert(message, isError = false) {
+            const alertBox = document.getElementById('alert-box');
+            const alertMsg = document.getElementById('alert-message');
+            const alertIcon = document.getElementById('alert-icon');
+
+            alertBox.classList.remove('hidden', 'bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-400', 'bg-red-500/10', 'border-red-500/30', 'text-red-400');
+
+            if (isError) {
+                alertBox.classList.add('bg-red-500/10', 'border-red-500/30', 'text-red-400');
+                alertIcon.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+            } else {
+                alertBox.classList.add('bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-400');
+                alertIcon.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
+            }
+
+            alertMsg.textContent = message;
+        }
+
+        function hideAlert() {
+            document.getElementById('alert-box').classList.add('hidden');
+        }
+
+        function showLoading(text = "Memproses Data...") {
+            document.getElementById('loading-text').textContent = text;
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
+        function goToStep(step) {
+            state.currentStep = step;
+            hideAlert();
+
+            // Hide all step contents
+            document.getElementById('step-content-1').classList.add('hidden');
+            document.getElementById('step-content-2').classList.add('hidden');
+            document.getElementById('step-content-3').classList.add('hidden');
+
+            // Reset tab styles
+            const tab1 = document.getElementById('step-tab-1');
+            const tab2 = document.getElementById('step-tab-2');
+            const tab3 = document.getElementById('step-tab-3');
+
+            const badge1 = document.getElementById('badge-step-1');
+            const badge2 = document.getElementById('badge-step-2');
+            const badge3 = document.getElementById('badge-step-3');
+
+            tab1.classList.add('opacity-40');
+            tab2.classList.add('opacity-40');
+            tab3.classList.add('opacity-40');
+
+            badge1.className = "w-2 h-2 rounded-full bg-zinc-600";
+            badge2.className = "w-2 h-2 rounded-full bg-zinc-600";
+            badge3.className = "w-2 h-2 rounded-full bg-zinc-600";
+
+            // Activate target step
+            if (step === 1) {
+                document.getElementById('step-content-1').classList.remove('hidden');
+                tab1.classList.remove('opacity-40');
+                badge1.className = "w-2 h-2 rounded-full bg-white";
+            } else if (step === 2) {
+                document.getElementById('step-content-2').classList.remove('hidden');
+                tab1.classList.remove('opacity-40');
+                tab2.classList.remove('opacity-40');
+                badge1.className = "w-2 h-2 rounded-full bg-emerald-400";
+                badge2.className = "w-2 h-2 rounded-full bg-white";
+            } else if (step === 3) {
+                document.getElementById('step-content-3').classList.remove('hidden');
+                tab1.classList.remove('opacity-40');
+                tab2.classList.remove('opacity-40');
+                tab3.classList.remove('opacity-40');
+                badge1.className = "w-2 h-2 rounded-full bg-emerald-400";
+                badge2.className = "w-2 h-2 rounded-full bg-emerald-400";
+                badge3.className = "w-2 h-2 rounded-full bg-emerald-400";
+            }
+        }
+
+        async function handleSendMagicLink(event) {
+            event.preventDefault();
+            hideAlert();
+
+            const email = document.getElementById('email-input').value.trim();
+            if (!email) {
+                showAlert("Silakan masukkan email Gmail yang valid.", true);
+                return;
+            }
+
+            state.email = email;
+            showLoading("Mengirimkan Magic Link ke email...");
+
+            try {
+                const response = await fetch(`${BASE_URL}/send-magic-link`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ email: state.email })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert("Magic link berhasil dikirimkan ke email Anda. Silakan periksa inbox atau spam.");
+                    goToStep(2);
+                } else {
+                    showAlert(data.message || "Gagal mengirimkan Magic Link.", true);
+                }
+            } catch (error) {
+                showAlert("Terjadi kesalahan jaringan/server: " + error.message, true);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function handleVerifyAccount(event) {
+            event.preventDefault();
+            hideAlert();
+
+            const rawLink = document.getElementById('rawlink-input').value.trim();
+            if (!rawLink) {
+                showAlert("Silakan masukkan URL / link verifikasi dari email.", true);
+                return;
+            }
+
+            showLoading("Memverifikasi link akun Alight Motion...");
+
+            try {
+                const response = await fetch(`${BASE_URL}/verify-account`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        email: state.email,
+                        rawLink: rawLink
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    state.idToken = data.idToken;
+                    state.refreshToken = data.refreshToken;
+
+                    // Update UI displaying tokens
+                    document.getElementById('res-id-token').value = data.idToken || '';
+                    document.getElementById('res-refresh-token').value = data.refreshToken || '';
+
+                    // Execute Step 3 automatically for seamless experience
+                    await autoApplyPremium();
+                } else {
+                    showAlert(data.message || "Verifikasi gagal. Pastikan link belum kedaluwarsa atau terpakai.", true);
+                    hideLoading();
+                }
+            } catch (error) {
+                showAlert("Terjadi kesalahan sistem saat verifikasi: " + error.message, true);
+                hideLoading();
+            }
+        }
+
+        async function autoApplyPremium() {
+            showLoading("Mengaplikasikan status Premium ke akun...");
+
+            try {
+                const response = await fetch(`${BASE_URL}/apply-premium`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        idToken: state.idToken,
+                        email: state.email
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Render Dashboard Results
+                    document.getElementById('res-email').textContent = state.email;
+                    document.getElementById('res-order-id').textContent = data.orderId || 'SUCCESS-AM-PREMIUM';
+
+                    if (data.quota) {
+                        const used = data.quota.used || 0;
+                        const limit = data.quota.limit || 5;
+                        const pct = Math.min(100, Math.round((used / limit) * 100));
+                        
+                        document.getElementById('quota-text').textContent = `${used} / ${limit}`;
+                        document.getElementById('quota-bar').style.width = `${pct}%`;
+                    }
+
+                    goToStep(3);
+                } else {
+                    if (response.status === 429) {
+                        showAlert(data.message || "Rate limit tercapai. Maksimal 5 akun per 24 jam.", true);
+                    } else {
+                        showAlert(data.message || "Gagal mengaplikasikan status Premium.", true);
+                    }
+                }
+            } catch (error) {
+                showAlert("Gagal menghubungi server premium: " + error.message, true);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function handleRefreshToken() {
+            if (!state.refreshToken) {
+                showAlert("Refresh token tidak tersedia.", true);
+                return;
+            }
+
+            const btn = document.getElementById('btn-refresh-token');
+            btn.disabled = true;
+            btn.textContent = "Memproses Refresh...";
+
+            try {
+                const response = await fetch(`${BASE_URL}/refresh-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ refreshToken: state.refreshToken })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    state.idToken = data.idToken;
+                    if (data.refreshToken) state.refreshToken = data.refreshToken;
+
+                    document.getElementById('res-id-token').value = state.idToken;
+                    document.getElementById('res-refresh-token').value = state.refreshToken;
+
+                    showAlert("Token berhasil diperbarui!");
+                } else {
+                    showAlert(data.message || "Gagal memperbarui token.", true);
+                }
+            } catch (error) {
+                showAlert("Kesalahan jaringan saat refresh token: " + error.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Refresh Token Expired";
+            }
+        }
+
+        function resetProcess() {
+            state.email = "";
+            state.idToken = "";
+            state.refreshToken = "";
+
+            document.getElementById('email-input').value = "";
+            document.getElementById('rawlink-input').value = "";
+            document.getElementById('res-id-token').value = "";
+            document.getElementById('res-refresh-token').value = "";
+
+            goToStep(1);
+        }
+    </script>
+</body>
+</html>
