@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     }
 
     const { endpoint, payload } = req.body;
-    const API_KEY = "AzaGanteng-tEKbSHWqb2hmoSIGXq1jf6YjrXl7r8DE";
+    const API_KEY = "AzaGanteng-7pj6CCIKg0eNKZLijcjfQwBg3Kg2KIN8";
     const BASE_URL = "https://axzyedev.biz.id/api/v1";
 
     if (!endpoint) {
