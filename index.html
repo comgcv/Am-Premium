@@ -539,11 +539,9 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT LOGIC (MENGGUNAKAN SERVERLESS PROXY VERCEL) -->
     <script>
-        // API Key baru yang sudah kamu buat
-        const API_KEY = "AzaGanteng-tEKbSHWqb2hmoSIGXq1jf6YjrXl7r8DE";
-        const BASE_URL = "https://axzyedev.biz.id/api/v1";
+        const PROXY_URL = "/api/proxy";
 
         const state = {
             email: "",
@@ -558,6 +556,18 @@
             renderHistory();
             updateStats();
         });
+
+        // Helper API Call via Vercel Proxy (Bypass CORS & Secure API Key)
+        async function callProxyApi(endpoint, payload) {
+            const response = await fetch(PROXY_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ endpoint, payload })
+            });
+            return { status: response.status, data: await response.json() };
+        }
 
         function initTheme() {
             const isDark = document.documentElement.classList.contains('dark');
@@ -677,16 +687,8 @@
             }
 
             try {
-                const response = await fetch(`${BASE_URL}/refresh-token`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': API_KEY
-                    },
-                    body: JSON.stringify({ refreshToken: item.refreshToken })
-                });
+                const { data } = await callProxyApi('refresh-token', { refreshToken: item.refreshToken });
 
-                const data = await response.json();
                 if (data.success) {
                     state.history[index].idToken = data.idToken;
                     if (data.refreshToken) state.history[index].refreshToken = data.refreshToken;
@@ -791,16 +793,7 @@
             showLoading("Mengirimkan Magic Link ke email...");
 
             try {
-                const response = await fetch(`${BASE_URL}/send-magic-link`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': API_KEY
-                    },
-                    body: JSON.stringify({ email: state.email })
-                });
-
-                const data = await response.json();
+                const { data } = await callProxyApi('send-magic-link', { email: state.email });
 
                 if (data.success) {
                     showAlert("Magic link berhasil dikirimkan ke email Anda. Silakan periksa inbox atau spam.");
@@ -828,19 +821,10 @@
             showLoading("Memverifikasi link akun Alight Motion...");
 
             try {
-                const response = await fetch(`${BASE_URL}/verify-account`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': API_KEY
-                    },
-                    body: JSON.stringify({
-                        email: state.email,
-                        rawLink: rawLink
-                    })
+                const { data } = await callProxyApi('verify-account', {
+                    email: state.email,
+                    rawLink: rawLink
                 });
-
-                const data = await response.json();
 
                 if (data.success) {
                     state.idToken = data.idToken;
@@ -864,19 +848,10 @@
             showLoading("Mengaplikasikan status Premium ke akun...");
 
             try {
-                const response = await fetch(`${BASE_URL}/apply-premium`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': API_KEY
-                    },
-                    body: JSON.stringify({
-                        idToken: state.idToken,
-                        email: state.email
-                    })
+                const { status, data } = await callProxyApi('apply-premium', {
+                    idToken: state.idToken,
+                    email: state.email
                 });
-
-                const data = await response.json();
 
                 if (data.success) {
                     document.getElementById('res-email').textContent = state.email;
@@ -896,7 +871,7 @@
                     saveToHistory(state.email, orderId, state.idToken, state.refreshToken);
                     goToStep(3);
                 } else {
-                    if (response.status === 429) {
+                    if (status === 429) {
                         showAlert(data.message || "Rate limit tercapai. Maksimal 5 akun per 24 jam.", true);
                     } else {
                         showAlert(data.message || "Gagal mengaplikasikan status Premium.", true);
@@ -920,16 +895,7 @@
             btn.textContent = "Memproses Refresh...";
 
             try {
-                const response = await fetch(`${BASE_URL}/refresh-token`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': API_KEY
-                    },
-                    body: JSON.stringify({ refreshToken: state.refreshToken })
-                });
-
-                const data = await response.json();
+                const { data } = await callProxyApi('refresh-token', { refreshToken: state.refreshToken });
 
                 if (data.success) {
                     state.idToken = data.idToken;
